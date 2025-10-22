@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   Text,
@@ -7,6 +7,8 @@ import {
   ImageBackground,
   SafeAreaView,
   ScrollView,
+  Pressable,
+  Modal,
 } from 'react-native';
 import { router } from 'expo-router';
 import { useAppContext } from '../lib/AppContext';
@@ -16,21 +18,41 @@ import { theme } from '../lib/theme';
 export default function MenuScreen() {
   const { menuItems } = useAppContext();
 
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+  const [isModalVisible, setModalVisible] = useState(false);
+
   const starters = menuItems.filter(item => item.course === 'Starter');
   const mains = menuItems.filter(item => item.course === 'Main');
   const desserts = menuItems.filter(item => item.course === 'Dessert');
+
+  const handleOpenDetails = (item: MenuItem) => {
+    setSelectedItem(item);
+    setModalVisible(true);
+  };
+
+  const handleCloseDetails = () => {
+    setModalVisible(false);
+    setSelectedItem(null);
+  };
 
   const renderCourseSection = (title: string, items: MenuItem[]) => (
     <View key={title} style={styles.courseSection}>
       <Text style={styles.courseTitle}>{title}</Text>
       {items.map((item) => (
-        <View key={item.id} style={styles.menuItem}>
+        <Pressable
+          key={item.id}
+          onPress={() => handleOpenDetails(item)}
+          style={({ pressed }) => [
+            styles.menuItem,
+            pressed && styles.menuItemPressed,
+          ]}
+        >
           <View style={styles.itemInfo}>
             <Text style={styles.itemName}>{item.name}</Text>
             <Text style={styles.itemDescription}>{item.description}</Text>
           </View>
           <Text style={styles.itemPrice}>R{item.price.toFixed(2)}</Text>
-        </View>
+        </Pressable>
       ))}
     </View>
   );
@@ -91,6 +113,43 @@ export default function MenuScreen() {
           </View>
         </ScrollView>
       </ImageBackground>
+
+      {/* Details Modal */}
+      <Modal
+        visible={isModalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={handleCloseDetails}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalCard}>
+            <Text style={styles.modalTitle}>Dish Details</Text>
+            {selectedItem && (
+              <View style={styles.modalContent}>
+                <Text style={styles.modalLabel}>Name</Text>
+                <Text style={styles.modalValue}>{selectedItem.name}</Text>
+
+                <Text style={styles.modalLabel}>Description</Text>
+                <Text style={styles.modalValue}>{selectedItem.description}</Text>
+
+                <Text style={styles.modalLabel}>Course</Text>
+                <Text style={styles.modalValue}>{selectedItem.course}</Text>
+
+                <Text style={styles.modalLabel}>Price</Text>
+                <Text style={styles.modalValue}>R{selectedItem.price.toFixed(2)}</Text>
+              </View>
+            )}
+            <View style={styles.modalButtons}>
+              <TouchableOpacity style={styles.modalSecondaryButton} onPress={handleCloseDetails}>
+                <Text style={styles.modalSecondaryText}>Close</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalPrimaryButton} onPress={() => router.push('/user-menu')}>
+                <Text style={styles.modalPrimaryText}>View in User Menu</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -163,6 +222,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.border,
   },
+  menuItemPressed: {
+    backgroundColor: theme.colors.surfaceStrong,
+    borderColor: theme.colors.primaryDark,
+  },
   itemInfo: {
     flex: 1,
   },
@@ -204,5 +267,53 @@ const styles = StyleSheet.create({
   crownIcon: {
     fontSize: 20,
     color: theme.colors.secondary,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: theme.spacing.lg,
+  },
+  modalCard: {
+    width: '100%',
+    backgroundColor: theme.colors.surface,
+    borderRadius: theme.radius.lg,
+    padding: theme.spacing.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+  },
+  modalTitle: {
+    color: theme.colors.text,
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: theme.spacing.md,
+    textAlign: 'center',
+  },
+  modalContent: {
+    marginBottom: theme.spacing.lg,
+    gap: theme.spacing.xs,
+  },
+  modalLabel: {
+    color: theme.colors.textSecondary,
+    fontSize: 12,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  modalValue: {
+    color: theme.colors.text,
+    fontSize: 16,
+    marginBottom: theme.spacing.sm,
+  },
+  closeButton: {
+    backgroundColor: theme.colors.primaryDark,
+    paddingVertical: theme.spacing.md,
+    borderRadius: theme.radius.md,
+    alignItems: 'center',
+  },
+  closeButtonText: {
+    color: '#001514',
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
