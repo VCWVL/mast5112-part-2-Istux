@@ -41,7 +41,8 @@ export default function HelpScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-        source={{ uri: theme.images.background }}
+        source={theme.images.background}
+        resizeMode="cover"
         style={styles.background}
         imageStyle={styles.backgroundImage}
       >
@@ -53,7 +54,6 @@ export default function HelpScreen() {
 
             {/* Decorative Elements */}
             <View style={styles.decorativeTop}>
-              <Text style={styles.decorativeText}>🍽️ 🥗 🌶️ 🧂 🥄</Text>
             </View>
 
             {/* Screen Title */}
@@ -80,31 +80,31 @@ export default function HelpScreen() {
                     style={styles.navButton} 
                     onPress={() => router.push('/home')}
                   >
-                    <Text style={styles.navButtonText}>🏠 Home</Text>
+                    <Text style={styles.navButtonText}> Home</Text>
                   </TouchableOpacity>
                   <TouchableOpacity 
                     style={styles.navButton} 
                     onPress={() => router.push('/menu')}
                   >
-                    <Text style={styles.navButtonText}>📋 Full Menu</Text>
+                    <Text style={styles.navButtonText}> Full Menu</Text>
                   </TouchableOpacity>
                   <TouchableOpacity 
                     style={styles.navButton} 
                     onPress={() => router.push('/add-dish')}
                   >
-                    <Text style={styles.navButtonText}>➕ Add Dish</Text>
+                    <Text style={styles.navButtonText}> Add Dish</Text>
                   </TouchableOpacity>
                   <TouchableOpacity 
                     style={styles.navButton} 
                     onPress={() => router.push('/remove-dish')}
                   >
-                    <Text style={styles.navButtonText}>➖ Remove Dish</Text>
+                    <Text style={styles.navButtonText}> Remove Dish</Text>
                   </TouchableOpacity>
                   <TouchableOpacity 
                     style={styles.navButton} 
                     onPress={() => router.push('/filter')}
                   >
-                    <Text style={styles.navButtonText}>🔍 Filter Menu</Text>
+                    <Text style={styles.navButtonText}> Filter Menu</Text>
                   </TouchableOpacity>
                 </>
               ) : (
@@ -119,7 +119,7 @@ export default function HelpScreen() {
                     style={styles.navButton} 
                     onPress={() => router.push('/filter')}
                   >
-                    <Text style={styles.navButtonText}>🔍 Filter Menu</Text>
+                    <Text style={styles.navButtonText}> Filter Menu</Text>
                   </TouchableOpacity>
                 </>
               )}

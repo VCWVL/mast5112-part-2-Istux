@@ -26,7 +26,8 @@ export default function FilterScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-        source={{ uri: theme.images.background }}
+        source={theme.images.background}
+        resizeMode="cover"
         style={styles.background}
         imageStyle={styles.backgroundImage}
       >
@@ -38,7 +39,6 @@ export default function FilterScreen() {
 
             {/* Decorative Elements */}
             <View style={styles.decorativeTop}>
-              <Text style={styles.decorativeText}>🍽️ 🥗 🌶️ 🧂 🥄</Text>
             </View>
 
             {/* Screen Title */}
@@ -107,7 +107,6 @@ export default function FilterScreen() {
 
             {/* Decorative Elements */}
             <View style={styles.decorativeBottom}>
-              <Text style={styles.crownIcon}>👑</Text>
             </View>
           </View>
         </ScrollView>

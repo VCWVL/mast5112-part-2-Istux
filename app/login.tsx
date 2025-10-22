@@ -40,8 +40,9 @@ export default function LoginScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-        source={{ uri: theme.images.background }}
+        source={theme.images.background}
         style={styles.background}
+        resizeMode="cover"
         imageStyle={styles.backgroundImage}
       >
         <View style={styles.scrim} />
@@ -113,7 +114,6 @@ export default function LoginScreen() {
 
           {/* Chicken Wing Icon */}
           <View style={styles.bottomIcon}>
-            <Text style={styles.chickenIcon}>🍗</Text>
           </View>
         </View>
       </ImageBackground>

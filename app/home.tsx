@@ -13,6 +13,8 @@ import { useAppContext } from '../lib/AppContext';
 import { theme } from '../lib/theme';
 import { MenuStats } from '../lib/types';
 
+// Background image is now handled through theme
+
 export default function HomeScreen() {
   const { user, menuItems } = useAppContext();
 
@@ -49,8 +51,9 @@ export default function HomeScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-        source={{ uri: theme.images.background }}
+        source={theme.images.background}
         style={styles.background}
+        resizeMode="cover"
         imageStyle={styles.backgroundImage}
       >
         <View style={styles.scrim} />
@@ -58,7 +61,6 @@ export default function HomeScreen() {
           <View style={styles.content}>
             {/* Decorative Elements */}
             <View style={styles.decorativeTop}>
-              <Text style={styles.decorativeText}>🍽️ 🥗 🌶️ 🧂 🥄</Text>
             </View>
 
             {/* Welcome Message */}
@@ -132,7 +134,6 @@ export default function HomeScreen() {
 
             {/* Decorative Elements */}
             <View style={styles.decorativeBottom}>
-              <Text style={styles.crownIcon}>👑</Text>
             </View>
           </View>
         </ScrollView>

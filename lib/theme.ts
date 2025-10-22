@@ -71,7 +71,6 @@ export const theme = {
     },
   },
   images: {
-    background:
-      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=1600&auto=format&fit=crop',
+    background: require('../Assets/restaurant-background.jpg'),
   },
 };

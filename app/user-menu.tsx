@@ -40,7 +40,8 @@ export default function UserMenuScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-        source={{ uri: theme.images.background }}
+        source={theme.images.background}
+        resizeMode="cover"
         style={styles.background}
         imageStyle={styles.backgroundImage}
       >
@@ -51,9 +52,7 @@ export default function UserMenuScreen() {
             <Text style={styles.header}>User Menu Screen</Text>
 
             {/* Decorative Elements */}
-            <View style={styles.decorativeTop}>
-              <Text style={styles.decorativeText}>🍽️ 🥗 🌶️ 🧂 🥄</Text>
-            </View>
+            <View style={styles.decorativeTop}></View>
 
             {/* Screen Title */}
             <Text style={styles.title}>Christoffel&apos;s Menu</Text>
@@ -126,7 +125,6 @@ export default function UserMenuScreen() {
 
             {/* Decorative Elements */}
             <View style={styles.decorativeBottom}>
-              <Text style={styles.crownIcon}>👑</Text>
             </View>
           </View>
         </ScrollView>

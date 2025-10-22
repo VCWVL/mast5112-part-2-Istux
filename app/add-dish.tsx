@@ -57,7 +57,8 @@ export default function AddDishScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
-        source={{ uri: theme.images.background }}
+        source={theme.images.background}
+        resizeMode="cover"
         style={styles.background}
         imageStyle={styles.backgroundImage}
       >
@@ -69,7 +70,6 @@ export default function AddDishScreen() {
 
             {/* Decorative Elements */}
             <View style={styles.decorativeTop}>
-              <Text style={styles.decorativeText}>🍞 🌿 🌶️ 🧂 🥣</Text>
             </View>
 
             {/* Screen Title */}
@@ -91,7 +91,7 @@ export default function AddDishScreen() {
                 onPress={() => setShowCourseDropdown(!showCourseDropdown)}
               >
                 <Text style={styles.dropdownText}>Course</Text>
-                <Text style={styles.dropdownArrow}>▲</Text>
+                <Text style={styles.dropdownArrow}>▼</Text>
               </TouchableOpacity>
 
               {showCourseDropdown && (
@@ -164,7 +164,6 @@ export default function AddDishScreen() {
 
             {/* Decorative Elements */}
             <View style={styles.decorativeBottom}>
-              <Text style={styles.leafIcon}>🍃</Text>
             </View>
           </View>
         </ScrollView>
