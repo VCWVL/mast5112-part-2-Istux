@@ -7,6 +7,8 @@ import {
   ImageBackground,
   SafeAreaView,
   ScrollView,
+  Pressable,
+  Modal,
 } from 'react-native';
 import { router } from 'expo-router';
 import { useAppContext } from '../lib/AppContext';
@@ -15,6 +17,8 @@ import { theme } from '../lib/theme';
 export default function UserMenuScreen() {
   const { menuItems } = useAppContext();
   const [selectedCourse, setSelectedCourse] = useState<'All' | 'Starter' | 'Main' | 'Dessert'>('All');
+  const [selectedItem, setSelectedItem] = useState<typeof menuItems[number] | null>(null);
+  const [isModalVisible, setModalVisible] = useState(false);
 
   const courses: ('All' | 'Starter' | 'Main' | 'Dessert')[] = ['All', 'Starter', 'Main', 'Dessert'];
 
@@ -22,17 +26,34 @@ export default function UserMenuScreen() {
     ? menuItems 
     : menuItems.filter(item => item.course === selectedCourse);
 
+  const handleOpenDetails = (item: typeof menuItems[number]) => {
+    setSelectedItem(item);
+    setModalVisible(true);
+  };
+
+  const handleCloseDetails = () => {
+    setModalVisible(false);
+    setSelectedItem(null);
+  };
+
   const renderCourseSection = (title: string, items: typeof menuItems) => (
     <View key={title} style={styles.courseSection}>
       <Text style={styles.courseTitle}>{title}</Text>
       {items.map((item) => (
-        <View key={item.id} style={styles.menuItem}>
+        <Pressable
+          key={item.id}
+          onPress={() => handleOpenDetails(item)}
+          style={({ pressed }) => [
+            styles.menuItem,
+            pressed && styles.menuItemPressed,
+          ]}
+        >
           <View style={styles.itemInfo}>
             <Text style={styles.itemName}>{item.name}</Text>
             <Text style={styles.itemDescription}>{item.description}</Text>
           </View>
           <Text style={styles.itemPrice}>R{item.price.toFixed(2)}</Text>
-        </View>
+        </Pressable>
       ))}
     </View>
   );
@@ -95,13 +116,20 @@ export default function UserMenuScreen() {
                 </Text>
                 
                 {filteredItems.map((item) => (
-                  <View key={item.id} style={styles.menuItem}>
+                  <Pressable
+                    key={item.id}
+                    onPress={() => handleOpenDetails(item)}
+                    style={({ pressed }) => [
+                      styles.menuItem,
+                      pressed && styles.menuItemPressed,
+                    ]}
+                  >
                     <View style={styles.itemInfo}>
                       <Text style={styles.itemName}>{item.name}</Text>
                       <Text style={styles.itemDescription}>{item.description}</Text>
                     </View>
                     <Text style={styles.itemPrice}>R{item.price.toFixed(2)}</Text>
-                  </View>
+                  </Pressable>
                 ))}
               </View>
             )}
@@ -129,6 +157,40 @@ export default function UserMenuScreen() {
           </View>
         </ScrollView>
       </ImageBackground>
+
+      {/* Details Modal */}
+      <Modal
+        visible={isModalVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={handleCloseDetails}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.modalCard}>
+            <Text style={styles.modalTitle}>Dish Details</Text>
+            {selectedItem && (
+              <View style={styles.modalContent}>
+                <Text style={styles.modalLabel}>Name</Text>
+                <Text style={styles.modalValue}>{selectedItem.name}</Text>
+
+                <Text style={styles.modalLabel}>Description</Text>
+                <Text style={styles.modalValue}>{selectedItem.description}</Text>
+
+                <Text style={styles.modalLabel}>Course</Text>
+                <Text style={styles.modalValue}>{selectedItem.course}</Text>
+
+                <Text style={styles.modalLabel}>Price</Text>
+                <Text style={styles.modalValue}>R{selectedItem.price.toFixed(2)}</Text>
+              </View>
+            )}
+            <View style={styles.modalButtons}>
+              <TouchableOpacity style={styles.modalSecondaryButton} onPress={handleCloseDetails}>
+                <Text style={styles.modalSecondaryText}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
@@ -247,6 +309,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.border,
   },
+  menuItemPressed: {
+    backgroundColor: theme.colors.surfaceStrong,
+    borderColor: theme.colors.primaryDark,
+  },
   itemInfo: {
     flex: 1,
   },
@@ -291,5 +357,65 @@ const styles = StyleSheet.create({
   crownIcon: {
     fontSize: 20,
     color: theme.colors.secondary,
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: theme.spacing.lg,
+  },
+  modalCard: {
+    width: '100%',
+    backgroundColor: '#0F172A',
+    borderRadius: theme.radius.lg,
+    padding: theme.spacing.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.35,
+    shadowRadius: 16,
+    elevation: 12,
+  },
+  modalTitle: {
+    color: theme.colors.text,
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: theme.spacing.md,
+    textAlign: 'center',
+  },
+  modalContent: {
+    marginBottom: theme.spacing.lg,
+    gap: theme.spacing.xs,
+  },
+  modalLabel: {
+    color: theme.colors.textSecondary,
+    fontSize: 12,
+    textTransform: 'uppercase',
+    letterSpacing: 0.5,
+  },
+  modalValue: {
+    color: theme.colors.text,
+    fontSize: 16,
+    marginBottom: theme.spacing.sm,
+  },
+  modalButtons: {
+    flexDirection: 'row',
+    gap: theme.spacing.sm,
+  },
+  modalSecondaryButton: {
+    flex: 1,
+    backgroundColor: theme.colors.surfaceStrong,
+    paddingVertical: theme.spacing.md,
+    borderRadius: theme.radius.md,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    alignItems: 'center',
+  },
+  modalSecondaryText: {
+    color: theme.colors.text,
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
