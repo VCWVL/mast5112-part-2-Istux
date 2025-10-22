@@ -13,9 +13,7 @@ import { useAppContext } from '../lib/AppContext';
 import { theme } from '../lib/theme';
 import { MenuStats } from '../lib/types';
 
-// Background image is now handled through theme
-
-export default function HomeScreen() {
+export default function UserHomeScreen() {
   const { user, menuItems } = useAppContext();
 
   const [stats, setStats] = useState<MenuStats>({
@@ -64,18 +62,19 @@ export default function HomeScreen() {
             </View>
 
             {/* Welcome Message */}
-            <Text style={styles.welcomeTitle}>Welcome, Chef {user?.username || 'Christoffel'}</Text>
+            <Text style={styles.welcomeTitle}>Welcome, {user?.username || 'Guest'}</Text>
 
             {/* Menu Statistics */}
             <View style={styles.statsContainer}>
-              <Text style={styles.statsText}>Total Menu (items: {stats.totalItems})</Text>
+              <Text style={styles.statsText}>Total Menu Items: {stats.totalItems}</Text>
               <Text style={styles.statsText}>Avg Price (Starters): R {stats.avgPriceStarters.toFixed(2)}</Text>
               <Text style={styles.statsText}>Avg Price (Mains): R {stats.avgPriceMains.toFixed(2)}</Text>
               <Text style={styles.statsText}>Avg Price (Desserts): R {stats.avgPriceDesserts.toFixed(2)}</Text>
             </View>
 
-            {/* Sample Menu Items */}
+            {/* Featured Dishes */}
             <View style={styles.sampleItemsContainer}>
+              <Text style={styles.sampleTitle}>Featured Dishes</Text>
               {sampleItems.map((item) => (
                 <View key={item.id} style={styles.sampleItem}>
                   <Text style={styles.sampleItemName}>{item.name} ({item.course})</Text>
@@ -88,28 +87,14 @@ export default function HomeScreen() {
             <View style={styles.buttonsContainer}>
               <TouchableOpacity 
                 style={styles.actionButton} 
-                onPress={() => router.push('/add-dish')}
-              >
-                <Text style={styles.actionButtonText}>Add Menu Item</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity 
-                style={styles.actionButton} 
-                onPress={() => router.push('/menu')}
+                onPress={() => router.push('/user-menu')}
               >
                 <Text style={styles.actionButtonText}>View Full Menu</Text>
               </TouchableOpacity>
 
               <TouchableOpacity 
                 style={styles.actionButton} 
-                onPress={() => router.push('/remove-dish')}
-              >
-                <Text style={styles.actionButtonText}>Remove Menu Item</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity 
-                style={styles.actionButton} 
-                onPress={() => router.push('/filter')}
+                onPress={() => router.push('/user-filter')}
               >
                 <Text style={styles.actionButtonText}>Filter Menu</Text>
               </TouchableOpacity>
@@ -162,22 +147,17 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingHorizontal: theme.spacing.lg,
+    paddingHorizontal: theme.spacing.xl,
     paddingTop: theme.spacing.lg,
   },
   decorativeTop: {
     alignItems: 'center',
-    marginBottom: theme.spacing.md,
-  },
-  decorativeText: {
-    fontSize: 18,
-    color: theme.colors.secondary,
-    fontWeight: '500',
+    marginBottom: theme.spacing.lg,
   },
   welcomeTitle: {
-    fontSize: theme.typography.h2.fontSize,
-    fontWeight: theme.typography.h2.fontWeight as any,
-    lineHeight: theme.typography.h2.lineHeight,
+    fontSize: theme.typography.h1.fontSize,
+    fontWeight: theme.typography.h1.fontWeight as any,
+    lineHeight: theme.typography.h1.lineHeight,
     color: theme.colors.text,
     textAlign: 'center',
     marginBottom: theme.spacing.xl,
@@ -186,53 +166,52 @@ const styles = StyleSheet.create({
     textShadowRadius: 4,
   },
   statsContainer: {
-    marginBottom: theme.spacing.xl,
     backgroundColor: theme.colors.surface,
-    borderRadius: theme.radius.lg,
     padding: theme.spacing.lg,
+    borderRadius: theme.radius.lg,
+    marginBottom: theme.spacing.xl,
     borderWidth: 1,
     borderColor: theme.colors.border,
   },
   statsText: {
-    fontSize: theme.typography.body.fontSize,
-    fontWeight: '500' as any,
-    lineHeight: theme.typography.body.lineHeight,
-    color: theme.colors.textSecondary,
+    color: theme.colors.text,
+    fontSize: 16,
     marginBottom: theme.spacing.sm,
+    textAlign: 'center',
   },
   sampleItemsContainer: {
-    marginBottom: theme.spacing.lg,
+    marginBottom: theme.spacing.xl,
+  },
+  sampleTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: theme.colors.primary,
+    marginBottom: theme.spacing.md,
+    textAlign: 'center',
   },
   sampleItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: theme.colors.surface,
-    padding: theme.spacing.lg,
-    marginBottom: theme.spacing.md,
-    borderRadius: theme.radius.lg,
+    padding: theme.spacing.md,
+    marginBottom: theme.spacing.sm,
+    borderRadius: theme.radius.md,
     borderWidth: 1,
     borderColor: theme.colors.border,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
   },
   sampleItemName: {
-    fontSize: theme.typography.body.fontSize,
-    lineHeight: theme.typography.body.lineHeight,
     color: theme.colors.text,
+    fontSize: 16,
+    fontWeight: 'bold',
     flex: 1,
-    fontWeight: '600' as any,
   },
   sampleItemPrice: {
-    fontSize: theme.typography.body.fontSize,
-    lineHeight: theme.typography.body.lineHeight,
     color: theme.colors.primary,
-    fontWeight: '700' as any,
+    fontSize: 16,
+    fontWeight: 'bold',
   },
   buttonsContainer: {
-    marginBottom: theme.spacing.md,
+    marginBottom: theme.spacing.xl,
   },
   actionButton: {
     backgroundColor: theme.colors.primary,
@@ -253,26 +232,24 @@ const styles = StyleSheet.create({
     color: '#001514',
   },
   navigationContainer: {
+    alignItems: 'center',
     marginBottom: theme.spacing.xl,
   },
   navButton: {
     backgroundColor: theme.colors.surfaceStrong,
-    padding: theme.spacing.md,
-    borderRadius: theme.radius.md,
+    paddingHorizontal: theme.spacing.xl,
+    paddingVertical: theme.spacing.md,
+    borderRadius: theme.radius.lg,
     alignItems: 'center',
   },
   navButtonText: {
     color: theme.colors.text,
     fontSize: 16,
-    fontWeight: 'bold' as any,
+    fontWeight: 'bold',
   },
   decorativeBottom: {
     position: 'absolute',
     bottom: theme.spacing.lg,
     right: theme.spacing.lg,
-  },
-  crownIcon: {
-    fontSize: 20,
-    color: theme.colors.secondary,
   },
 });

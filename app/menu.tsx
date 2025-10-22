@@ -107,6 +107,23 @@ export default function MenuScreen() {
               </TouchableOpacity>
             </View>
 
+            {/* Navigation Buttons */}
+            <View style={styles.navigationContainer}>
+              <TouchableOpacity 
+                style={styles.navButton} 
+                onPress={() => router.push('/home')}
+              >
+                <Text style={styles.navButtonText}>← Back to Home</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.navButton} 
+                onPress={() => router.push('/help')}
+              >
+                <Text style={styles.navButtonText}>Help →</Text>
+              </TouchableOpacity>
+            </View>
+
             {/* Decorative Elements */}
             <View style={styles.decorativeBottom}>
             </View>
@@ -257,6 +274,24 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#001514',
     fontSize: 16,
+    fontWeight: 'bold',
+  },
+  navigationContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: theme.spacing.xl,
+  },
+  navButton: {
+    backgroundColor: theme.colors.surfaceStrong,
+    paddingHorizontal: theme.spacing.lg,
+    paddingVertical: theme.spacing.md,
+    borderRadius: theme.radius.md,
+    flex: 0.45,
+    alignItems: 'center',
+  },
+  navButtonText: {
+    color: theme.colors.text,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   decorativeBottom: {

@@ -113,7 +113,7 @@ export default function HelpScreen() {
                     style={styles.navButton} 
                     onPress={() => router.push('/user-menu')}
                   >
-                    <Text style={styles.navButtonText}>👤 User Menu</Text>
+                    <Text style={styles.navButtonText}> User Menu</Text>
                   </TouchableOpacity>
                   <TouchableOpacity 
                     style={styles.navButton} 
@@ -123,13 +123,19 @@ export default function HelpScreen() {
                   </TouchableOpacity>
                 </>
               )}
+              <TouchableOpacity 
+                style={styles.navButton} 
+                onPress={() => router.push('/login')}
+              >
+                <Text style={styles.navButtonText}>Back to Login</Text>
+              </TouchableOpacity>
             </View>
 
             {/* Contact Section */}
             <View style={styles.contactContainer}>
               <Text style={styles.contactTitle}>Contact Support</Text>
               <Text style={styles.contactText}>
-                For additional help, please contact Chef Christoffel&apos;s support team.
+                For additional help, please contact Chef Christoffel&apos;s support team on WWW.christoffel.co.za.
               </Text>
             </View>
 

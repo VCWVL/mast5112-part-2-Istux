@@ -32,7 +32,7 @@ export default function LoginScreen() {
       if (selectedRole === 'Chef') {
         router.push('/home');
       } else {
-        router.push('/user-menu');
+        router.push('/user-home');
       }
     }
   };

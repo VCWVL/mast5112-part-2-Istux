@@ -149,7 +149,7 @@ export default function AddDishScreen() {
             <View style={styles.navigationContainer}>
               <TouchableOpacity 
                 style={styles.navButton} 
-                onPress={() => router.back()}
+                onPress={() => router.push('/home')}
               >
                 <Text style={styles.navButtonText}>← Back to Home</Text>
               </TouchableOpacity>
@@ -158,7 +158,7 @@ export default function AddDishScreen() {
                 style={styles.navButton} 
                 onPress={() => router.push('/menu')}
               >
-                <Text style={styles.navButtonText}>View Menu →</Text>
+                <Text style={styles.navButtonText}>View Full Menu →</Text>
               </TouchableOpacity>
             </View>
 

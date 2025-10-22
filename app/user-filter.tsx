@@ -12,12 +12,14 @@ import {
 } from 'react-native';
 import { router } from 'expo-router';
 import { useAppContext } from '../lib/AppContext';
+import { MenuItem } from '../lib/types';
 import { theme } from '../lib/theme';
 
-export default function UserMenuScreen() {
+export default function UserFilterScreen() {
   const { menuItems } = useAppContext();
   const [selectedCourse, setSelectedCourse] = useState<'All' | 'Starter' | 'Main' | 'Dessert'>('All');
-  const [selectedItem, setSelectedItem] = useState<typeof menuItems[number] | null>(null);
+  const [showCourseDropdown, setShowCourseDropdown] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
   const [isModalVisible, setModalVisible] = useState(false);
 
   const courses: ('All' | 'Starter' | 'Main' | 'Dessert')[] = ['All', 'Starter', 'Main', 'Dessert'];
@@ -26,7 +28,7 @@ export default function UserMenuScreen() {
     ? menuItems 
     : menuItems.filter(item => item.course === selectedCourse);
 
-  const handleOpenDetails = (item: typeof menuItems[number]) => {
+  const handleOpenDetails = (item: MenuItem) => {
     setSelectedItem(item);
     setModalVisible(true);
   };
@@ -35,28 +37,6 @@ export default function UserMenuScreen() {
     setModalVisible(false);
     setSelectedItem(null);
   };
-
-  const renderCourseSection = (title: string, items: typeof menuItems) => (
-    <View key={title} style={styles.courseSection}>
-      <Text style={styles.courseTitle}>{title}</Text>
-      {items.map((item) => (
-        <Pressable
-          key={item.id}
-          onPress={() => handleOpenDetails(item)}
-          style={({ pressed }) => [
-            styles.menuItem,
-            pressed && styles.menuItemPressed,
-          ]}
-        >
-          <View style={styles.itemInfo}>
-            <Text style={styles.itemName}>{item.name}</Text>
-            <Text style={styles.itemDescription}>{item.description}</Text>
-          </View>
-          <Text style={styles.itemPrice}>R{item.price.toFixed(2)}</Text>
-        </Pressable>
-      ))}
-    </View>
-  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -70,91 +50,97 @@ export default function UserMenuScreen() {
         <ScrollView style={styles.scrollView}>
           <View style={styles.content}>
             {/* Header */}
-            <Text style={styles.header}>User Menu Screen</Text>
+            <Text style={styles.header}>User Filter Screen</Text>
 
             {/* Decorative Elements */}
-            <View style={styles.decorativeTop}></View>
-
-            {/* Screen Title */}
-            <Text style={styles.title}>Christoffel&apos;s Menu</Text>
-
-            {/* Course Filter Buttons */}
-            <View style={styles.filterContainer}>
-              <Text style={styles.filterTitle}>Select Course:</Text>
-              <View style={styles.filterButtons}>
-                {courses.map((course) => (
-                  <TouchableOpacity
-                    key={course}
-                    style={[
-                      styles.filterButton,
-                      selectedCourse === course && styles.selectedFilterButton
-                    ]}
-                    onPress={() => setSelectedCourse(course)}
-                  >
-                    <Text style={[
-                      styles.filterButtonText,
-                      selectedCourse === course && styles.selectedFilterButtonText
-                    ]}>
-                      {course}
-                    </Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
+            <View style={styles.decorativeTop}>
             </View>
 
-            {/* Menu Items */}
-            {selectedCourse === 'All' ? (
-              <>
-                {renderCourseSection('Starters', menuItems.filter(item => item.course === 'Starter'))}
-                {renderCourseSection('Mains', menuItems.filter(item => item.course === 'Main'))}
-                {renderCourseSection('Desserts', menuItems.filter(item => item.course === 'Dessert'))}
-              </>
-            ) : (
-              <View style={styles.resultsContainer}>
-                <Text style={styles.resultsTitle}>
-                  {selectedCourse} ({filteredItems.length} items)
-                </Text>
-                
-                {filteredItems.map((item) => (
-                  <Pressable
-                    key={item.id}
-                    onPress={() => handleOpenDetails(item)}
-                    style={({ pressed }) => [
-                      styles.menuItem,
-                      pressed && styles.menuItemPressed,
-                    ]}
-                  >
-                    <View style={styles.itemInfo}>
-                      <Text style={styles.itemName}>{item.name}</Text>
-                      <Text style={styles.itemDescription}>{item.description}</Text>
-                    </View>
-                    <Text style={styles.itemPrice}>R{item.price.toFixed(2)}</Text>
-                  </Pressable>
-                ))}
-              </View>
-            )}
+            {/* Screen Title */}
+            <Text style={styles.title}>Filter Menu</Text>
+
+            {/* Course Filter Dropdown */}
+            <View style={styles.filterContainer}>
+              <Text style={styles.filterTitle}>Filter by Course:</Text>
+              
+              <TouchableOpacity
+                style={styles.dropdown}
+                onPress={() => setShowCourseDropdown(!showCourseDropdown)}
+              >
+                <Text style={styles.dropdownText}>Course: {selectedCourse}</Text>
+                <Text style={styles.dropdownArrow}>▼</Text>
+              </TouchableOpacity>
+
+              {showCourseDropdown && (
+                <View style={styles.dropdownOptions}>
+                  {courses.map((course) => (
+                    <TouchableOpacity
+                      key={course}
+                      style={[
+                        styles.dropdownOption,
+                        selectedCourse === course && styles.selectedOption
+                      ]}
+                      onPress={() => {
+                        setSelectedCourse(course);
+                        setShowCourseDropdown(false);
+                      }}
+                    >
+                      <Text style={styles.dropdownOptionText}>{course}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+              )}
+            </View>
+
+            {/* Filtered Results */}
+            <View style={styles.resultsContainer}>
+              <Text style={styles.resultsTitle}>
+                {selectedCourse} ({filteredItems.length} items)
+              </Text>
+              
+              {filteredItems.map((item) => (
+                <Pressable
+                  key={item.id}
+                  onPress={() => handleOpenDetails(item)}
+                  style={({ pressed }) => [
+                    styles.filteredItem,
+                    pressed && styles.filteredItemPressed,
+                  ]}
+                >
+                  <View style={styles.itemInfo}>
+                    <Text style={styles.itemName}>{item.name}</Text>
+                    <Text style={styles.itemDescription}>{item.description}</Text>
+                    <Text style={styles.itemCourse}>{item.course}</Text>
+                  </View>
+                  <Text style={styles.itemPrice}>R{item.price.toFixed(2)}</Text>
+                </Pressable>
+              ))}
+            </View>
+
+            {/* Action Buttons */}
+            <View style={styles.buttonsContainer}>
+              <TouchableOpacity 
+                style={styles.actionButton} 
+                onPress={() => router.push('/user-menu')}
+              >
+                <Text style={styles.buttonText}>Back to User Menu</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+                style={styles.actionButton} 
+                onPress={() => router.push('/user-home')}
+              >
+                <Text style={styles.buttonText}>Back to Home</Text>
+              </TouchableOpacity>
+            </View>
 
             {/* Navigation Buttons */}
             <View style={styles.navigationContainer}>
               <TouchableOpacity 
                 style={styles.navButton} 
-                onPress={() => router.push('/user-home')}
-              >
-                <Text style={styles.navButtonText}>Home</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity 
-                style={styles.navButton} 
-                onPress={() => router.push('/user-filter')}
-              >
-                <Text style={styles.navButtonText}>Filter</Text>
-              </TouchableOpacity>
-
-              <TouchableOpacity 
-                style={styles.navButton} 
                 onPress={() => router.push('/help')}
               >
-                <Text style={styles.navButtonText}>Help</Text>
+                <Text style={styles.navButtonText}>Help →</Text>
               </TouchableOpacity>
 
               <TouchableOpacity 
@@ -267,53 +253,59 @@ const styles = StyleSheet.create({
     marginBottom: theme.spacing.md,
     textAlign: 'center',
   },
-  filterButtons: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-  },
-  filterButton: {
+  dropdown: {
     backgroundColor: theme.colors.surface,
-    paddingHorizontal: theme.spacing.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
+    borderRadius: theme.radius.md,
+    paddingHorizontal: theme.spacing.md,
     paddingVertical: theme.spacing.sm,
-    borderRadius: theme.radius.lg,
-    margin: theme.spacing.xs,
+    marginBottom: theme.spacing.sm,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  dropdownText: {
+    color: theme.colors.text,
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  dropdownArrow: {
+    color: theme.colors.textMuted,
+    fontSize: 12,
+  },
+  dropdownOptions: {
+    backgroundColor: theme.colors.surfaceStrong,
+    borderRadius: theme.radius.md,
+    marginBottom: theme.spacing.sm,
     borderWidth: 1,
     borderColor: theme.colors.border,
   },
-  selectedFilterButton: {
-    backgroundColor: theme.colors.primary,
-    borderColor: theme.colors.primaryDark,
+  dropdownOption: {
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.border,
   },
-  filterButtonText: {
+  selectedOption: {
+    backgroundColor: theme.colors.primaryDark,
+  },
+  dropdownOptionText: {
     color: theme.colors.text,
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
   },
-  selectedFilterButtonText: {
-    color: '#001514',
-  },
-  courseSection: {
+  resultsContainer: {
     marginBottom: theme.spacing.xl,
   },
-  courseTitle: {
+  resultsTitle: {
     fontSize: 20,
     fontWeight: 'bold',
     color: theme.colors.primary,
     marginBottom: theme.spacing.md,
     textAlign: 'center',
   },
-  resultsContainer: {
-    marginBottom: theme.spacing.xl,
-  },
-  resultsTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: theme.colors.primary,
-    marginBottom: theme.spacing.md,
-    textAlign: 'center',
-  },
-  menuItem: {
+  filteredItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: theme.colors.surface,
@@ -323,7 +315,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: theme.colors.border,
   },
-  menuItemPressed: {
+  filteredItemPressed: {
     backgroundColor: theme.colors.surfaceStrong,
     borderColor: theme.colors.primaryDark,
   },
@@ -339,31 +331,49 @@ const styles = StyleSheet.create({
   itemDescription: {
     color: theme.colors.textMuted,
     fontSize: 14,
+    marginBottom: theme.spacing.xs,
+  },
+  itemCourse: {
+    color: theme.colors.primary,
+    fontSize: 12,
+    fontWeight: 'bold',
   },
   itemPrice: {
     color: theme.colors.primary,
     fontSize: 16,
     fontWeight: 'bold',
   },
+  buttonsContainer: {
+    marginBottom: theme.spacing.lg,
+  },
+  actionButton: {
+    backgroundColor: theme.colors.primaryDark,
+    padding: theme.spacing.md,
+    borderRadius: theme.radius.md,
+    marginBottom: theme.spacing.sm,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#001514',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
   navigationContainer: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     justifyContent: 'space-between',
     marginBottom: theme.spacing.xl,
-    gap: theme.spacing.sm,
   },
   navButton: {
     backgroundColor: theme.colors.surfaceStrong,
-    paddingHorizontal: theme.spacing.md,
-    paddingVertical: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.lg,
+    paddingVertical: theme.spacing.md,
     borderRadius: theme.radius.md,
-    flex: 0.48,
+    flex: 0.45,
     alignItems: 'center',
-    minWidth: 80,
   },
   navButtonText: {
     color: theme.colors.text,
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   decorativeBottom: {
