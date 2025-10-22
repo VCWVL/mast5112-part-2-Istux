@@ -166,6 +166,25 @@ Does not collect or store user data, ensuring confidentiality.
 
 Complies with ethical UX design by maintaining transparency and usability.
 
+
+
+
+Visuals from the app.
+
+<img width="1919" height="1079" alt="Screenshot 2025-10-22 193256" src="https://github.com/user-attachments/assets/114ffae2-9521-47fb-98bf-88487517d560" />
+<img width="1918" height="1079" alt="Screenshot 2025-10-22 193308" src="https://github.com/user-attachments/assets/b35c4b61-1575-4189-901b-03c910d2cb71" />
+<img width="1919" height="1079" alt="Screenshot 2025-10-22 193316" src="https://github.com/user-attachments/assets/b1d43fd7-4115-43f1-90b2-5e54bd0fd9ec" />
+<img width="1919" height="1079" alt="Screenshot 2025-10-22 193325" src="https://github.com/user-attachments/assets/aebe9c5d-c43a-45f9-9506-045a4f559330" />
+<img width="1919" height="1079" alt="Screenshot 2025-10-22 193337" src="https://github.com/user-attachments/assets/a19744bf-6f70-4738-8718-8f13476daad6" />
+<img width="1918" height="1079" alt="Screenshot 2025-10-22 193349" src="https://github.com/user-attachments/assets/a90372ee-e92b-4a6b-b29f-a0f507085657" />
+<img width="1919" height="1079" alt="Screenshot 2025-10-22 193405" src="https://github.com/user-attachments/assets/7bcbfbfd-643c-49f2-a50b-482fe1543b40" />
+<img width="1919" height="1074" alt="Screenshot 2025-10-22 193443" src="https://github.com/user-attachments/assets/ac887795-d64d-4873-b8e6-8a7099adb2e9" />
+<img width="1919" height="1079" alt="Screenshot 2025-10-22 193449" src="https://github.com/user-attachments/assets/4eab8a89-66f4-4e28-b32c-6845c789cb79" />
+<img width="1919" height="1079" alt="Screenshot 2025-10-22 193458" src="https://github.com/user-attachments/assets/3b1418b8-dc7f-43cd-8a4d-e585ce7e073a" />
+<img width="1910" height="1079" alt="Screenshot 2025-10-22 193510" src="https://github.com/user-attachments/assets/93a524d8-f71b-4848-84ae-858259a7a4b2" />
+
+
+
 References
 
 Expo. (2024). React Native development with Expo Router. Available at: https://docs.expo.dev/router/introduction/
@@ -184,3 +203,11 @@ Nielsen Norman Group. (2022). 10 Usability Heuristics for User Interface Design.
  (Accessed 22 October 2025).
 OpenJS Foundation. (2023). React Native and Expo Best Practices for Performance Optimization. Available at: https://openjsf.org
  (Accessed 22 October 2025).
+
+
+
+
+
+
+
+
