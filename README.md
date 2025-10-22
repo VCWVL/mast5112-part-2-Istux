@@ -165,3 +165,22 @@ Avoids bias by presenting all dishes equally without prioritization.
 Does not collect or store user data, ensuring confidentiality.
 
 Complies with ethical UX design by maintaining transparency and usability.
+
+References
+
+Expo. (2024). React Native development with Expo Router. Available at: https://docs.expo.dev/router/introduction/
+ (Accessed 22 October 2025).
+Meta Platforms, Inc. (2023). React Native Documentation. Available at: https://reactnative.dev/docs
+ (Accessed 22 October 2025).
+TypeScript Team. (2024). TypeScript Handbook. Microsoft. Available at: https://www.typescriptlang.org/docs/
+ (Accessed 22 October 2025).
+W3C. (2021). Web Content Accessibility Guidelines (WCAG) 2.1. Available at: https://www.w3.org/TR/WCAG21/
+ (Accessed 22 October 2025).
+React Community. (2024). Using Hooks for State Management in React. Available at: https://react.dev/reference/react
+ (Accessed 22 October 2025).
+Google Developers. (2023). Material Design Guidelines for Mobile Applications. Available at: https://m3.material.io
+ (Accessed 22 October 2025).
+Nielsen Norman Group. (2022). 10 Usability Heuristics for User Interface Design. Available at: https://www.nngroup.com/articles/ten-usability-heuristics/
+ (Accessed 22 October 2025).
+OpenJS Foundation. (2023). React Native and Expo Best Practices for Performance Optimization. Available at: https://openjsf.org
+ (Accessed 22 October 2025).
